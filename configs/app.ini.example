@@ -1,0 +1,4 @@
+[app]
+Port = 8080
+ReadTimeout = 60
+WriteTimeout = 60

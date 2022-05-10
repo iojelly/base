@@ -2,29 +2,27 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/iojelly/base/pkg/logger"
+	"github.com/iojelly/base/pkg/configs"
 	"net/http"
 	"time"
 )
 
 func main() {
-	router := gin.New()
+	configs.Conf2Values()
 
-	router.Use(logger.JSONLogger())
-
-	router.Use(gin.Recovery())
+	router := gin.Default()
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
+			"message": "Hello World!",
 		})
 	})
 
 	s := &http.Server{
-		Addr:           ":8080",
+		Addr:           ":" + configs.AppSetting.Port,
 		Handler:        router,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+		ReadTimeout:    configs.AppSetting.ReadTimeout * time.Second,
+		WriteTimeout:   configs.AppSetting.WriteTimeout * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 
